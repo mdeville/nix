@@ -290,6 +290,7 @@ in
         requests
       ]
     ))
+    zbar
     zrythm
   ];
 
