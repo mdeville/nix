@@ -237,6 +237,7 @@ in
     pkgs-unstable.code-cursor
     clojure
     stockly-jetbrains.datagrip
+    pkgs-unstable.duckdb
     delta
     docker-compose
     expressvpn
@@ -276,7 +277,7 @@ in
     vim
     vlc
     wget
-    pkgs-unstable.zed-editor
+    #pkgs-unstable.zed-editor
     (python3.withPackages (
       python-pkgs: with python-pkgs; [
         jupyter
@@ -288,7 +289,7 @@ in
         pandas
         psycopg
         requests
-      ]
+      ] ++ pandas.optional-dependencies.parquet
     ))
     zbar
     zrythm
