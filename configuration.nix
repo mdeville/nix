@@ -205,9 +205,6 @@ in
       syntaxHighlighting.enable = true;
       shellAliases = {
         zed = "zeditor";
-        nixedit = "sudo zeditor /etc/nixos/";
-        nixswitch = "sudo nixos-rebuild switch";
-        nixupgrade = "nix flake update --flake /etc/nixos";
         open = "xdg-open";
       };
       ohMyZsh = {
@@ -223,7 +220,6 @@ in
   environment.gnome.excludePackages = with pkgs; [
     geary
     gnome-text-editor
-    gnome-terminal
     gnome-tour
   ];
 
@@ -258,11 +254,11 @@ in
     mixxx
     ncdu
     nicotine-plus
-    nil
     nixd
-    nixfmt-rfc-style
+    nixfmt
     nushell
     onlyoffice-desktopeditors
+    openssl
     qbittorrent
     qemu
     rclone
@@ -271,7 +267,7 @@ in
     supercollider
     myVsCode
     unciv
-    ungoogled-chromium
+    #ungoogled-chromium
     uv
     vcv-rack
     vim
