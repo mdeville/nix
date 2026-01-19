@@ -267,7 +267,7 @@ in
     supercollider
     myVsCode
     unciv
-    #ungoogled-chromium
+    ungoogled-chromium
     uv
     vcv-rack
     vim
