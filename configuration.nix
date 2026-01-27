@@ -275,7 +275,9 @@ in
     wget
     #pkgs-unstable.zed-editor
     (python3.withPackages (
-      python-pkgs: with python-pkgs; [
+      python-pkgs:
+      with python-pkgs;
+      [
         jupyter
         jupyter-collaboration
         lxml
@@ -285,7 +287,8 @@ in
         pandas
         psycopg
         requests
-      ] ++ pandas.optional-dependencies.parquet
+      ]
+      ++ pandas.optional-dependencies.parquet
     ))
     zbar
     zrythm
