@@ -252,6 +252,7 @@ in
     jq
     lshw
     mixxx
+    moonlight-qt
     ncdu
     nicotine-plus
     nixd
