@@ -8,16 +8,6 @@
 }@args:
 
 let
-  plat = "linux-x64";
-  archive_fmt = "tar.gz";
-  myVsCode = pkgs.vscode.overrideAttrs (oldAttrs: rec {
-    version = "1.106.3";
-    src = builtins.fetchurl {
-      name = "VSCode_${version}_${plat}.${archive_fmt}";
-      url = "https://update.code.visualstudio.com/${version}/${plat}/stable";
-      sha256 = "1kh7hrkyg30ralgidq3pk10061413046wfl10mi52sssjawygnsp";
-    };
-  });
   stockly-insomnia = (pkgs.callPackage "${stockly}/programs/insomnia.nix" { });
   stockly-jetbrains = (import "${stockly}/programs/jetbrains" args);
 in
@@ -109,29 +99,11 @@ in
     blueman.enable = true;
     expressvpn.enable = true;
     libinput.enable = true;
-    ollama = {
-      enable = true;
-      acceleration = "cuda";
-      package = pkgs-unstable.ollama;
-    };
     openssh.enable = true;
     pipewire = {
       enable = true;
       pulse.enable = true;
       jack.enable = true;
-    };
-    postgresql = {
-      enable = true;
-      enableTCPIP = true;
-      authentication = pkgs.lib.mkOverride 10 ''
-        #...
-        #type database DBuser origin-address auth-method
-        local all       all     trust
-        # ipv4
-        host  all      all     127.0.0.1/32   trust
-        # ipv6
-        host all       all     ::1/128        trust
-      '';
     };
     printing = {
       enable = true;
@@ -147,12 +119,6 @@ in
     };
   };
 
-  # Disable services on boot
-  systemd.services = {
-    ollama.wantedBy = lib.mkForce [ ];
-    postgresql.wantedBy = lib.mkForce [ ];
-  };
-
   users = {
     defaultUserShell = pkgs.zsh;
     users.mdeville = {
@@ -161,8 +127,6 @@ in
         "docker"
         "networkmanager"
         "wheel"
-      ];
-      packages = with pkgs; [
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGE+jfrb2lrlPhEnOmhe+5DjIu+/uLxGhwU3TPGCVB6j matthew@stockly.ai"
@@ -204,7 +168,6 @@ in
       autosuggestions.enable = true;
       syntaxHighlighting.enable = true;
       shellAliases = {
-        zed = "zeditor";
         open = "xdg-open";
       };
       ohMyZsh = {
@@ -231,7 +194,6 @@ in
     bat
     btop
     pkgs-unstable.code-cursor
-    clojure
     stockly-jetbrains.datagrip
     pkgs-unstable.duckdb
     delta
@@ -240,6 +202,7 @@ in
     eza
     fastfetch
     fd
+    ffmpeg
     filezilla
     gcc
     gimp
@@ -252,7 +215,6 @@ in
     jq
     lshw
     mixxx
-    moonlight-qt
     ncdu
     nicotine-plus
     nixd
@@ -265,8 +227,6 @@ in
     rclone
     ripgrep
     slack
-    supercollider
-    myVsCode
     unciv
     ungoogled-chromium
     uv
@@ -274,7 +234,6 @@ in
     vim
     vlc
     wget
-    #pkgs-unstable.zed-editor
     (python3.withPackages (
       python-pkgs:
       with python-pkgs;
@@ -292,7 +251,6 @@ in
       ++ pandas.optional-dependencies.parquet
     ))
     zbar
-    zrythm
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system
