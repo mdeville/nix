@@ -14,6 +14,7 @@ in
 {
   imports = [
     ./hardware-configuration.nix
+    ./expressvpn/module.nix
   ];
 
   swapDevices = [
@@ -198,7 +199,6 @@ in
     pkgs-unstable.duckdb
     delta
     docker-compose
-    expressvpn
     eza
     fastfetch
     fd
@@ -207,6 +207,7 @@ in
     gcc
     gimp
     pkgs-unstable.ghostty
+    postgresql
     gnomeExtensions.appindicator
     gnumake
     gparted
