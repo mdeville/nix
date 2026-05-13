@@ -3,7 +3,6 @@
   stdenv,
   fetchurl,
   autoPatchelfHook,
-  makeWrapper,
   copyDesktopItems,
   makeDesktopItem,
   glib,
@@ -37,7 +36,6 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     autoPatchelfHook
-    makeWrapper
     copyDesktopItems
   ];
 
@@ -101,25 +99,35 @@ stdenv.mkDerivation {
     runHook postUnpack
   '';
 
+  # The vendor daemon authorises clients by reading
+  # `readlink("/proc/<peer>/exe")` and matching it against its install
+  # layout under `/opt/expressvpn/bin/...`. Symlinks back to /nix/store/...
+  # (or wrapProgram's `.X-wrapped` ELFs) fail that check, because the
+  # kernel records the canonical resolved path of the executed inode.
+  #
+  # Fix: ship the real ELFs under `$out/libexec/expressvpn/`, and let the
+  # NixOS module bind-mount that directory at `/opt/expressvpn/bin`.
+  # `$out/bin/<name>` is a tiny shell wrapper that re-execs through the
+  # bind-mount path so /proc/self/exe resolves to /opt/expressvpn/bin/<name>.
   installPhase = ''
     runHook preInstall
-    mkdir -p "$out"/{bin,lib,plugins,qml,share,share/applications,share/pixmaps}
-    cp -r expressvpnfiles/bin/* "$out/bin/"
-    cp -r expressvpnfiles/lib/* "$out/lib/"
+    mkdir -p "$out"/{bin,libexec/expressvpn,lib,plugins,qml,share,share/applications,share/pixmaps}
+    cp -r expressvpnfiles/bin/*     "$out/libexec/expressvpn/"
+    cp -r expressvpnfiles/lib/*     "$out/lib/"
     cp -r expressvpnfiles/plugins/* "$out/plugins/"
-    cp -r expressvpnfiles/qml/* "$out/qml/"
-    cp -r expressvpnfiles/share/* "$out/share/"
+    cp -r expressvpnfiles/qml/*     "$out/qml/"
+    cp -r expressvpnfiles/share/*   "$out/share/"
 
     install -m644 installfiles/app-icon.png "$out/share/pixmaps/expressvpn.png"
 
-    substituteInPlace "$out/bin/qt.conf" \
+    substituteInPlace "$out/libexec/expressvpn/qt.conf" \
       --replace-fail /opt/expressvpn "$out"
 
-    substituteInPlace "$out/bin/openvpn-updown.sh" \
+    substituteInPlace "$out/libexec/expressvpn/openvpn-updown.sh" \
       --replace-fail /opt/expressvpn/var /var/lib/expressvpn
 
-    ln -s expressvpn-daemon "$out/bin/expressvpnd"
-    ln -s expressvpnctl "$out/bin/expressvpn"
+    ln -s expressvpn-daemon "$out/libexec/expressvpn/expressvpnd"
+    ln -s expressvpnctl     "$out/libexec/expressvpn/expressvpn"
     runHook postInstall
   '';
 
@@ -134,10 +142,17 @@ stdenv.mkDerivation {
       ];
     in
     ''
-      for bin in expressvpn-daemon expressvpn-client expressvpnctl \
-                 expressvpn-support-tool support-tool-launcher browser_helper; do
-        wrapProgram "$out/bin/$bin" --prefix PATH : "${rtPath}"
+      for name in expressvpn-daemon expressvpn-client expressvpnctl \
+                  expressvpn-support-tool support-tool-launcher browser_helper; do
+        {
+          echo '#!${stdenv.shell}'
+          echo 'export PATH="${rtPath}''${PATH:+:'"$"'PATH}"'
+          echo "exec /opt/expressvpn/bin/$name \"\$@\""
+        } > "$out/bin/$name"
+        chmod +x "$out/bin/$name"
       done
+      ln -s expressvpn-daemon "$out/bin/expressvpnd"
+      ln -s expressvpnctl     "$out/bin/expressvpn"
     '';
 
   desktopItems = [

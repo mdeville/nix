@@ -98,7 +98,10 @@ in
 
   services = {
     blueman.enable = true;
-    expressvpn.enable = true;
+    expressvpn = {
+      enable = true;
+      users = [ "mdeville" ];
+    };
     libinput.enable = true;
     openssh.enable = true;
     pipewire = {
