@@ -121,6 +121,14 @@ in
       xkb.layout = "us";
       excludePackages = [ pkgs.xterm ];
     };
+    tor = {
+      enable = true;
+      openFirewall = true;
+    };
+  };
+
+  systemd.services = {
+    tor.wantedBy = lib.mkForce [ ];
   };
 
   users = {
@@ -197,6 +205,7 @@ in
     awscli2
     bat
     btop
+    crosspipe
     pkgs-unstable.code-cursor
     stockly-jetbrains.datagrip
     pkgs-unstable.duckdb
@@ -214,7 +223,6 @@ in
     gnomeExtensions.appindicator
     gnumake
     gparted
-    helvum
     stockly-insomnia
     jq
     lshw
@@ -234,7 +242,7 @@ in
     unciv
     ungoogled-chromium
     uv
-    vcv-rack
+    # vcv-rack
     vim
     vlc
     wget

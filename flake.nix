@@ -2,14 +2,14 @@
   description = "My NixOS flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stockly-computers = {
-      url = "git+ssh://git@github.com/Stockly/Computers?ref=master";
+      url = "git+ssh://git@github.com/Stockly/Computers?ref=UpdateFlakeLock";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
       inputs.rust-overlay.follows = "rust-overlay";

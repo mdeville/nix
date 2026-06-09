@@ -18,7 +18,13 @@
   libglvnd,
   libdrm,
   wayland,
-  xorg,
+  libx11,
+  libxcb,
+  libsm,
+  libice,
+  libxext,
+  libxcb-cursor,
+  libxkbfile,
   iproute2,
   iptables,
   systemd,
@@ -54,13 +60,13 @@ stdenv.mkDerivation {
     libglvnd
     libdrm
     wayland
-    xorg.libX11
-    xorg.libxcb
-    xorg.libSM
-    xorg.libICE
-    xorg.libXext
-    xorg.xcbutilcursor
-    xorg.libxkbfile
+    libx11
+    libxcb
+    libsm
+    libice
+    libxext
+    libxcb-cursor
+    libxkbfile
   ];
 
   # ExpressVPN ships QML plugins for Qt modules it never imports at runtime
