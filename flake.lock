@@ -122,11 +122,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780975129,
-        "narHash": "sha256-428T1pLXnbVeUgZx2wWEkbvl3ZORjras34ANZ3ACp5A=",
+        "lastModified": 1781147846,
+        "narHash": "sha256-hBdiQYd40xRtBWBiXHUxuQYWmJBiK19YO1FiYgrmEo0=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "fe64e6b409dc513274d2941f8da13bbd0fdcf44e",
+        "rev": "107c334f141854f563f8adf1db781dc453d92639",
         "type": "github"
       },
       "original": {
@@ -150,16 +150,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1781011491,
-        "narHash": "sha256-9V0zOZgRRIKABvN5JsYs5OhjUHMVy9OnEjcY8norbO0=",
-        "ref": "UpdateFlakeLock",
-        "rev": "6a0530961e3691a81d5a02367e279909a0078fcb",
+        "lastModified": 1781086759,
+        "narHash": "sha256-gst+DN1y6XnHp2fdrAafqZr52le0ZW//D+LtUKr0s04=",
+        "ref": "refs/heads/master",
+        "rev": "374074172b64d3a691ae7502dc0e5155be16c680",
         "revCount": 334,
         "type": "git",
         "url": "ssh://git@github.com/Stockly/Computers"
       },
       "original": {
-        "ref": "UpdateFlakeLock",
         "type": "git",
         "url": "ssh://git@github.com/Stockly/Computers"
       }

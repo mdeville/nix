@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stockly-computers = {
-      url = "git+ssh://git@github.com/Stockly/Computers?ref=UpdateFlakeLock";
+      url = "git+ssh://git@github.com/Stockly/Computers";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
       inputs.rust-overlay.follows = "rust-overlay";
