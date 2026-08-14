@@ -233,6 +233,7 @@ in
     nixfmt
     nushell
     onlyoffice-desktopeditors
+    opencode
     openssl
     qbittorrent
     qemu
@@ -242,7 +243,7 @@ in
     unciv
     ungoogled-chromium
     uv
-    # vcv-rack
+    vcv-rack
     vim
     vlc
     wget
@@ -263,6 +264,7 @@ in
       ++ pandas.optional-dependencies.parquet
     ))
     zbar
+    zed-editor
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system
