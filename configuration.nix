@@ -235,10 +235,12 @@ in
     onlyoffice-desktopeditors
     opencode
     openssl
+    ouch
     qbittorrent
     qemu
     rclone
     ripgrep
+    starsector
     slack
     unciv
     ungoogled-chromium
