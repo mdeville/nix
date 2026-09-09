@@ -31,13 +31,16 @@
   procps,
   psmisc,
 }:
+let
+  version = "14.2.1.13658";
+in
 stdenv.mkDerivation {
   pname = "expressvpn";
-  version = "14.1.0.13058";
+  inherit version;
 
   src = fetchurl {
-    url = "https://www.expressvpn.works/clients/linux/expressvpn-linux-universal-14.1.0.13058_release.run";
-    hash = "sha256-E4AV8ZibgpFLE7xzFOfHD9gNSxSr7A1IH/uPIum6bOg=";
+    url = "https://www.expressvpn.works/clients/linux/expressvpn-linux-universal-${version}_release.run";
+    hash = "sha256-0facxhq2yrn7fkx7shw4jx5yikb43pcw060vjbdywr0wijqbxp53";
   };
 
   nativeBuildInputs = [
