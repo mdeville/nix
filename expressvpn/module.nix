@@ -6,6 +6,28 @@
 }:
 let
   cfg = config.services.expressvpn;
+
+  # ExpressVPN deliberately gives some helper processes a conventional,
+  # sanitized PATH.  Expose the tools they expect at /usr/bin, but only
+  # inside the daemon's mount namespace.
+  fhsTools = pkgs.buildEnv {
+    name = "expressvpn-fhs-tools";
+    paths = with pkgs; [
+      cfg.package
+      coreutils
+      e2fsprogs
+      findutils
+      gawk
+      gnugrep
+      gnused
+      iproute2
+      iptables
+      procps
+      psmisc
+      systemd
+    ];
+    pathsToLink = [ "/bin" ];
+  };
 in
 {
   disabledModules = [ "services/networking/expressvpn.nix" ];
@@ -95,6 +117,7 @@ in
         RestartSec = 5;
         BindReadOnlyPaths = [
           "${pkgs.bash}/bin/bash:/bin/bash"
+          "${fhsTools}/bin:/usr/bin"
           "${pkgs.iproute2}/bin/ip:/sbin/ip"
         ];
       };
