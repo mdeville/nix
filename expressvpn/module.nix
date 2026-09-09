@@ -19,12 +19,12 @@ let
       findutils
       gawk
       gnugrep
-      gnused
       iproute2
       iptables
       procps
       psmisc
       systemd
+      util-linux
     ];
     pathsToLink = [ "/bin" ];
   };
@@ -103,13 +103,7 @@ in
       ];
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
-      path = with pkgs; [
-        iproute2
-        iptables
-        systemd
-        procps
-        psmisc
-      ];
+      path = [ fhsTools ];
       unitConfig.RequiresMountsFor = "/opt/expressvpn/bin";
       serviceConfig = {
         ExecStart = "/opt/expressvpn/bin/expressvpn-daemon";

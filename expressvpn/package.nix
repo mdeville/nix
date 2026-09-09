@@ -14,22 +14,11 @@
   zlib,
   brotli,
   libnl,
-  libGL,
   libglvnd,
   libdrm,
   wayland,
-  libx11,
-  libxcb,
   libsm,
   libice,
-  libxext,
-  libxcb-cursor,
-  libxkbfile,
-  iproute2,
-  iptables,
-  systemd,
-  procps,
-  psmisc,
 }:
 let
   version = "14.2.1.13658";
@@ -58,19 +47,15 @@ stdenv.mkDerivation {
     dbus
     zlib
     brotli
-    libnl
-    libGL
     libglvnd
     libdrm
     wayland
-    libx11
-    libxcb
     libsm
     libice
-    libxext
-    libxcb-cursor
-    libxkbfile
   ];
+
+  # The daemon loads libnl dynamically for network-change monitoring.
+  runtimeDependencies = [ (lib.getLib libnl) ];
 
   # ExpressVPN ships QML plugins for Qt modules it never imports at runtime
   # (Qt.labs.*, QtQuick.VirtualKeyboard, QtQuick.Particles, QtQml.StateMachine,
@@ -140,29 +125,18 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
-  postFixup =
-    let
-      rtPath = lib.makeBinPath [
-        iproute2
-        iptables
-        systemd
-        procps
-        psmisc
-      ];
-    in
-    ''
-      for name in expressvpn-daemon expressvpn-client expressvpnctl \
-                  expressvpn-support-tool support-tool-launcher browser_helper; do
-        {
-          echo '#!${stdenv.shell}'
-          echo 'export PATH="${rtPath}''${PATH:+:'"$"'PATH}"'
-          echo "exec /opt/expressvpn/bin/$name \"\$@\""
-        } > "$out/bin/$name"
-        chmod +x "$out/bin/$name"
-      done
-      ln -s expressvpn-daemon "$out/bin/expressvpnd"
-      ln -s expressvpnctl     "$out/bin/expressvpn"
-    '';
+  postFixup = ''
+    for name in expressvpn-daemon expressvpn-client expressvpnctl \
+                expressvpn-support-tool support-tool-launcher browser_helper; do
+      cat > "$out/bin/$name" <<EOF
+    #!${stdenv.shell}
+    exec /opt/expressvpn/bin/$name "\$@"
+    EOF
+      chmod +x "$out/bin/$name"
+    done
+    ln -s expressvpn-daemon "$out/bin/expressvpnd"
+    ln -s expressvpnctl "$out/bin/expressvpn"
+  '';
 
   desktopItems = [
     (makeDesktopItem {
