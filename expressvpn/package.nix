@@ -40,7 +40,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://www.expressvpn.works/clients/linux/expressvpn-linux-universal-${version}_release.run";
-    hash = "sha256-0facxhq2yrn7fkx7shw4jx5yikb43pcw060vjbdywr0wijqbxp53";
+    hash = "sha256-o9y+sIwcZO7bkhsYwNkdZM3oS5eEQ336dMdmLzDsTDk=";
   };
 
   nativeBuildInputs = [
